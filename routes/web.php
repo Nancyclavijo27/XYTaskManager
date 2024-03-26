@@ -17,8 +17,9 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::post('/tasks', 'App\Http\Controllers\TaskController@create');
-Route::delete('/tasks/{taskId}', 'App\Http\Controllers\TaskController@delete');
+Route::get('/tasks', [TaskController::class, 'index'])->name('tasks.index');
+//Route::post('/tasks', 'App\Http\Controllers\TaskController@create');
+//Route::delete('/tasks/{taskId}', 'App\Http\Controllers\TaskController@delete');
 
 
 // Mostrar formulario de solicitud de restablecimiento de contraseña
@@ -44,7 +45,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/usuarios/{id}/editar', [UserController::class, 'edit'])->name('editar-usuario');
     
     
+    
     // Rutas para la administración de usuarios
     Route::get('/admin/users/create', [AdminUserController::class, 'create'])->name('admin.users.create');
     Route::post('/admin/users', [AdminUserController::class, 'store'])->name('admin.users.store');
+
+    Route::post('/admin/tasks', [TaskController::class, 'store'])->name('admin.tasks.store'); // Ruta para almacenar la tarea
+    Route::get('/admin/tasks/create', [TaskController::class, 'create'])->name('admin.tasks.create');
+
+
 });

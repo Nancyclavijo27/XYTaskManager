@@ -7,32 +7,73 @@ use Illuminate\Http\Request;
 use App\Models\Task; // Importa el modelo de tarea
 use App\Models\User; // Importa el modelo de usuario
 use Illuminate\Support\Facades\Auth;
+use App\Policies\TaskPolicy;
 
 
 class TaskController extends Controller
 {
-    // Método para crear una nueva tarea
-    public function create(Request $request)
+
+    // Método para mostrar la lista de tareas
+    public function index()
     {
-        // Validar los datos recibidos del formulario
-        $request->validate([
+        // Obtener todas las tareas desde la base de datos
+        $tasks = Task::all();
+
+        // Retornar la vista con las tareas
+        return view('tasks.index', compact('tasks'));
+    }
+
+    public function create()
+    {
+       // Obtener la lista de empleados disponibles para asignar tareas
+    $employees = User::all();
+
+    // Devolver la vista 'create' junto con la variable $employees
+    return view('admin.tasks.create', compact('employees'));
+    }
+
+
+    // Método para crear una nueva tarea
+    public function store(Request $request)
+    {
+         // Validar los datos recibidos del formulario
+         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
+            'employee_id' => 'required|exists:users,id',
             // Agrega aquí cualquier otra validación necesaria
         ]);
 
-        // Crea una nueva instancia de Task y asigna los valores
+        try {
+            // Verificar si el usuario tiene permiso para crear tareas
+            $this->authorize('create', Task::class);
+        } catch (AuthorizationException $e) {
+            return redirect()->back()->with('error', 'No tienes permiso para crear tareas.');
+        }
+
+        // Crear una nueva instancia de Task y asignar los valores
         $task = new Task();
-        $task->title = $request->input('title');
-        $task->description = $request->input('description');
-        // Asigna el estado inicial de la tarea
+        $task->title = $validatedData['title'];
+        $task->description = $validatedData['description'];
+        // Asignar el estado inicial de la tarea
         $task->status = 'Pendiente';
+        $task->assigned_to = $validatedData['employee_id'];
 
-        // Guarda la tarea asociada al usuario autenticado
-        Auth::user()->tasks()->save($task);
+        // Obtener el ID del usuario seleccionado en el formulario
+        $employeeId = $validatedData['employee_id'];
 
-        // Redirecciona o responde con un mensaje de éxito
+        // Obtener el usuario correspondiente al ID seleccionado
+        $assignedUser = User::findOrFail($employeeId);
+
+        // Guardar la tarea asociada al usuario seleccionado
+        $assignedUser->tasks()->save($task);
+        // Redireccionar con un mensaje de éxito
+        return redirect()->route('tasks.index')->with('success', 'Tarea creada exitosamente');
     }
+
+
+    
+    
 
     // Método para eliminar una tarea existente
     public function delete($taskId)
@@ -40,8 +81,11 @@ class TaskController extends Controller
         // Busca la tarea por su ID
         $task = Task::findOrFail($taskId);
 
-        // Verifica si el usuario autenticado puede eliminar la tarea
-        $this->authorize('delete', $task);
+        try {
+            $this->authorize('delete', $task);
+        } catch (AuthorizationException $e) {
+            return redirect()->back()->with('error', 'No tienes permiso para eliminar esta tarea.');
+        }
 
         // Elimina la tarea
         $task->delete();
@@ -60,8 +104,11 @@ class TaskController extends Controller
         // Busca la tarea por su ID
         $task = Task::findOrFail($taskId);
 
-        // Verifica si el usuario autenticado puede asignar un empleado a la tarea
-        $this->authorize('assignEmployee', $task);
+        try {
+            $this->authorize('assignEmployee', $task);
+        } catch (AuthorizationException $e) {
+            return redirect()->back()->with('error', 'No tienes permiso para asignar empleados a esta tarea.');
+        }
 
         // Asigna el empleado a la tarea
         $task->assigned_to = $request->input('employee_id');
