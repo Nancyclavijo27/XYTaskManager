@@ -30,8 +30,7 @@ Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLink
 Route::get('/reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
 Route::post('/reset-password', [ResetPasswordController::class, 'reset'])->name('password.update');
 
-
-
+Route::get('/all-tasks', [TaskController::class, 'showAllTasks'])->name('tasks.showAll');
 
 // Rutas protegidas por superadmin
 Route::middleware(['auth'])->group(function () {

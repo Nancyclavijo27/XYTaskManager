@@ -53,4 +53,16 @@ class User extends Authenticatable
     {
         return $this->hasMany(Task::class);
     }
+
+    // Define la relación con los comentarios del usuario
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    // Define la relación con los archivos adjuntos del usuario
+    public function attachments()
+    {
+        return $this->hasMany(Attachment::class);
+    }
 }

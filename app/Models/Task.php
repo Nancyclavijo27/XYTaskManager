@@ -23,6 +23,11 @@ class Task extends Model
         return $this->hasMany(Comment::class);
     }
 
+    public function attachments()
+    {
+        return $this->hasMany(Attachment::class);
+    }
+
     /**
      * Define métodos para manipular los datos de las tareas.
      */
@@ -43,4 +48,6 @@ class Task extends Model
             // Agrega aquí cualquier otra regla de validación necesaria
         ];
     }
+
+    
 }

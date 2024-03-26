@@ -33,6 +33,12 @@ class TaskController extends Controller
     return view('admin.tasks.create', compact('employees'));
     }
 
+    public function showAllTasks()
+    {
+        $tasks = Task::with('comments', 'attachments', 'assignedUser')->get();
+        return view('tasks.tasks', compact('tasks'));
+    }
+
 
     // Método para crear una nueva tarea
     public function store(Request $request)
@@ -118,5 +124,33 @@ class TaskController extends Controller
         $task->save();
 
         // Redirecciona o responde con un mensaje de éxito
+    }
+
+    public function addComment(Request $request, $taskId) {
+        $request->validate([
+            'content' => 'required|string',
+        ]);
+
+        $task = Task::findOrFail($taskId);
+        $comment = new Comment();
+        $comment->content = $request->input('content');
+        $task->comments()->save($comment);
+
+        return redirect()->back()->with('success', 'Comentario agregado exitosamente');
+    }
+
+    public function addAttachment(Request $request, $taskId) {
+        $request->validate([
+            'file' => 'required|file|mimes:pdf,jpg,jpeg,png',
+        ]);
+
+        $task = Task::findOrFail($taskId);
+        $attachmentPath = $request->file('file')->store('attachments');
+        $attachment = new Attachment();
+        $attachment->name = $request->file('file')->getClientOriginalName();
+        $attachment->url = $attachmentPath;
+        $task->attachments()->save($attachment);
+
+        return redirect()->back()->with('success', 'Archivo adjunto agregado exitosamente');
     }
 }
