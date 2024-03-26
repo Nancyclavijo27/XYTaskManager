@@ -23,6 +23,7 @@ class TaskController extends Controller
         return view('tasks.index', compact('tasks'));
     }
 
+
     public function create()
     {
        // Obtener la lista de empleados disponibles para asignar tareas
@@ -90,7 +91,8 @@ class TaskController extends Controller
         // Elimina la tarea
         $task->delete();
 
-        // Redirecciona o responde con un mensaje de éxito
+        // Redireccionar al usuario de regreso a la lista de tareas
+        return redirect()->route('tasks.index')->with('success', 'Tarea eliminada exitosamente');
     }
 
     // Método para asignar un empleado a una tarea

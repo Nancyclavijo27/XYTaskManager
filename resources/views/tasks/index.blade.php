@@ -16,6 +16,13 @@
                                 <p>{{ $task->description }}</p>
                                 <p><strong>Estado:</strong> {{ $task->status }}</p>
                                 <p><strong>Asignado a:</strong> {{ $task->assignedUser->name }}</p>
+                                @if(Auth::user()->role === 'super_admin')
+                                 <form action="{{ route('tasks.delete', ['taskId' => $task->id]) }}" method="POST">
+                                   @csrf
+                                     @method('DELETE')
+                                    <button type="submit">Eliminar Tarea</button>
+                                 </form>
+                                @endif
                                 <!-- Agrega aquí la lógica para mostrar los comentarios y archivos adjuntos -->
                             </li>
                         @endif

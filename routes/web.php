@@ -18,8 +18,6 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::get('/tasks', [TaskController::class, 'index'])->name('tasks.index');
-//Route::post('/tasks', 'App\Http\Controllers\TaskController@create');
-//Route::delete('/tasks/{taskId}', 'App\Http\Controllers\TaskController@delete');
 
 
 // Mostrar formulario de solicitud de restablecimiento de contraseña
@@ -52,6 +50,12 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/admin/tasks', [TaskController::class, 'store'])->name('admin.tasks.store'); // Ruta para almacenar la tarea
     Route::get('/admin/tasks/create', [TaskController::class, 'create'])->name('admin.tasks.create');
+
+    // Ruta para eliminar una tarea
+    
+    Route::delete('/tasks/{taskId}', [TaskController::class, 'delete'])->name('tasks.delete');
+
+
 
 
 });

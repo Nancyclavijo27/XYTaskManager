@@ -15,8 +15,8 @@
         <!-- Agrega más enlaces según sea necesario -->
         <li><a href="{{ route('admin.tasks.create') }}">Crear tarea</a></li>
         <li><a href="{{ route('admin.users.create') }}">Crear usuario</a></li>
+        <li><a href="{{ route('tasks.index') }}">Lista de Tareas</a></li>
     </ul>
-    
-    <!-- Aquí puedes agregar más contenido según sea necesario -->
+   
 </body>
 </html>
