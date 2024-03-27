@@ -8,6 +8,7 @@ use App\Models\Task; // Importa el modelo de tarea
 use App\Models\User; // Importa el modelo de usuario
 use Illuminate\Support\Facades\Auth;
 use App\Policies\TaskPolicy;
+use App\Models\Comment;
 
 
 class TaskController extends Controller
@@ -153,4 +154,6 @@ class TaskController extends Controller
 
         return redirect()->back()->with('success', 'Archivo adjunto agregado exitosamente');
     }
+
+    
 }

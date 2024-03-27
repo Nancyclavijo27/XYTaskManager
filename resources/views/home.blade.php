@@ -15,6 +15,9 @@
                     @endif
 
                     {{ __('You are logged in!') }}
+                    <a href="{{ route('tasks.index') }}" class="btn btn-primary">Ver lista de tareas</a>
+                   
+                    
                 </div>
             </div>
         </div>

@@ -11,7 +11,7 @@
     <ul>
         
         <li><a href="{{ route('superadmin.users') }}">Lista de usuarios</a></li>
-        <li><a href="{{ route('superadmin.reports') }}">Generar reportes</a></li>
+        <li><a href="{{ route('reports.generate') }}">Generar reportes</a></li>
         <!-- Agrega más enlaces según sea necesario -->
         <li><a href="{{ route('admin.tasks.create') }}">Crear tarea</a></li>
         <li><a href="{{ route('admin.users.create') }}">Crear usuario</a></li>

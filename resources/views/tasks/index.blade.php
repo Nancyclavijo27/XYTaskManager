@@ -23,6 +23,8 @@
                                     <button type="submit">Eliminar Tarea</button>
                                  </form>
                                 @endif
+                                <a href="{{ route('tasks.comments.show', $task) }}" class="btn btn-primary">Ver Comentarios</a>
+
                                 <!-- Agrega aquí la lógica para mostrar los comentarios y archivos adjuntos -->
                             </li>
                         @endif
