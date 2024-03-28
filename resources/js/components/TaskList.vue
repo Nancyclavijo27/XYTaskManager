@@ -25,12 +25,24 @@
 </template>
 
 <script>
+import axios from '../util/axios'; // Importa la instancia de Axios desde el archivo axios.js
+
 export default {
   data() {
     return {
-      tasks: [], // Debes pasar las tareas desde el componente padre
+      tasks: [], // Variable para almacenar las tareas obtenidas de la API
       userRole: '' // Debes pasar el rol de usuario desde el componente padre
     };
+  },
+  mounted() {
+    // Método que se ejecuta cuando el componente se monta en el DOM
+    axios.get('/tasks') // Realiza una solicitud GET a la ruta '/tasks' de la API
+      .then(response => { // Maneja la respuesta exitosa de la solicitud
+        this.tasks = response.data; // Asigna los datos de las tareas obtenidas a la variable 'tasks'
+      })
+      .catch(error => { // Maneja cualquier error que ocurra durante la solicitud
+        console.error('Error al obtener las tareas:', error); // Imprime el error en la consola
+      });
   },
   methods: {
     deleteTask(taskId) {
