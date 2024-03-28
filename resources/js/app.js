@@ -1,6 +1,6 @@
 import './bootstrap';
 import { createApp } from 'vue';
-import App from './components/App.vue'; // Importa el componente principal App.vue
+import App from './App.vue'; // Importa el componente principal App.vue
 import LoginForm from './components/LoginForm.vue';
 import PasswordResetForm from './components/PasswordResetForm.vue';
 import TaskList from './components/TaskList.vue';

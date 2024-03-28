@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import router from '../router/router';
+import router from './router/router.';
 
 export default {
   name: 'App',
